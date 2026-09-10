@@ -26,7 +26,11 @@ while multiprocessing runs completely separate processes with their own memory s
 # Instructions
 # Resources
 . https://medium.com/@sylvain.tiset/understanding-mutexes-and-semaphores-preventing-deadlocks-and-starvation-in-concurrent-programming-6bc477b7b7a9
+
 . https://medium.com/@drajput_14416/os-understanding-the-critical-section-problem-and-its-solutions-2eb34f09e868
+
 . Software Execution Models: https://medium.com/@lalosaimi/software-execution-models-bf9ae753e910
+
 . Mutex : https://stackoverflow.com/questions/34524/what-is-a-mutex
+
 . Race condition : https://www.geeksforgeeks.org/operating-systems/race-condition-in-operating-systems/
