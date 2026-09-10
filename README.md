@@ -31,6 +31,8 @@ while multiprocessing runs completely separate processes with their own memory s
 
 . [Software Execution Models](https://medium.com/@lalosaimi/software-execution-models-bf9ae753e910)
 
+$${\color{red}Red}$$
+
 . [Mutex](https://stackoverflow.com/questions/34524/what-is-a-mutex)
 
 . [Race condition](https://www.geeksforgeeks.org/operating-systems/race-condition-in-operating-systems/)
