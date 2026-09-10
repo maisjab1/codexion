@@ -18,4 +18,4 @@ Multi-threading uses multiple threads inside a single process to share memory,
 while multiprocessing runs completely separate processes with their own memory spaces
 # Instructions
 # Resources
-. Software Execution Models: shttps://medium.com/@lalosaimi/software-execution-models-bf9ae753e910
+. Software Execution Models: https://medium.com/@lalosaimi/software-execution-models-bf9ae753e910
