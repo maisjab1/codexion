@@ -20,7 +20,7 @@ mutual exclusion is a property of concurrency control, which is instituted for t
 https://en.wikipedia.org/wiki/Mutual_exclusion
 
 ## comparisons
-### <code style="color : aquamarine">multi-threading vs multiprocessing</code> 
+### <code style="color : blue">multi-threading vs multiprocessing</code> 
 Multi-threading uses multiple threads inside a single process to share memory, 
 while multiprocessing runs completely separate processes with their own memory spaces
 # Instructions
@@ -31,7 +31,6 @@ while multiprocessing runs completely separate processes with their own memory s
 
 . [Software Execution Models](https://medium.com/@lalosaimi/software-execution-models-bf9ae753e910)
 
-$${\color{red}Red}$$
 
 . [Mutex](https://stackoverflow.com/questions/34524/what-is-a-mutex)
 
