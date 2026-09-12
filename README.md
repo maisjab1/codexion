@@ -1,6 +1,10 @@
 *This activity has been created as part of the 42 curriculum by mjabarin*
 # Codexion
 # Description
+
+## The dining philosophers problem
+<img width="757" height="772" alt="image" src="https://github.com/user-attachments/assets/f1122823-bc4f-4f89-89eb-0849c3fe5b59" />
+
 ## Some terminologies
 ### Concurrency
 In computer science, concurrency refers to the ability of a system to execute multiple tasks through simultaneous execution or time-sharing (context switching), sharing resources and managing interactions. Concurrency improves responsiveness, throughput, and scalability in modern computing, including: [1][2][3][4][5]
