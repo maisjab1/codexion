@@ -31,10 +31,10 @@ while multiprocessing runs completely separate processes with their own memory s
 
 . [Software Execution Models](https://medium.com/@lalosaimi/software-execution-models-bf9ae753e910)
 
-. [A video on 'Semaphores'](https://youtu.be/XDIOC2EY5JE?si=nbppYzrV0DSG76ln)
-. [A video on 'The dining philosophers problem'](https://www.youtube.com/watch?v=FYUi-u7UWgw&list=TLPQMTIwOTIwMjaUGbdWMS_Bvg&index=2)
-
-
 . [Mutex](https://stackoverflow.com/questions/34524/what-is-a-mutex)
 
 . [Race condition](https://www.geeksforgeeks.org/operating-systems/race-condition-in-operating-systems/)
+
+. [A video on 'Semaphores'](https://youtu.be/XDIOC2EY5JE?si=nbppYzrV0DSG76ln)
+
+. [A video on 'The dining philosophers problem'](https://www.youtube.com/watch?v=FYUi-u7UWgw&list=TLPQMTIwOTIwMjaUGbdWMS_Bvg&index=2)
