@@ -6,7 +6,7 @@
 /*   By: mjabarin <mjabarin@learner.42.tech>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/14 17:10:20 by mjabarin          #+#    #+#             */
-/*   Updated: 2026/09/14 17:31:06 by mjabarin         ###   ########.fr       */
+/*   Updated: 2026/09/15 13:39:50 by mjabarin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,12 @@ int ft_isnum(char *num)
 		printf("Error\n");
 		return(0);
 	}
-	if (num[i] == '-' || num[i] =='+')
+	if (num[i] == '-')
+	{
+		printf("Error negative value\n");
+		return(0);
+	}
+	if (num[i] =='+')
 		i++;
 	if (!num[i])
 	{
@@ -38,7 +43,7 @@ int ft_isnum(char *num)
 	{
 		if (!ft_isdigit(num[i]))
 		{		
-			printf("Argument 1-7 needs to be an int\n");
+			printf("Argument (1-7) needs to be an int\n");
 			return(0);
 		}
 		i++;
@@ -59,4 +64,11 @@ int validate(char **argv)
 			return 0;
 		i++;
 	}
+	if (!(strcmp(argv[8],"fifo") == 0))
+	{
+		if (!(strcmp(argv[8],"edf") == 0))
+			printf("invalid scheduler\n");
+	}
+		
+
 }
