@@ -52,7 +52,9 @@ int	main(int argc, char **argv)
 		state.coders[i].right = &state.dongles[(i + 1) % state.config->number_of_coders];
 		i++;
 	}
-
+	
+	clock_gettime(CLOCK_MONOTONIC, &state.start_time);
+	state.someone_starved = false;
 // threads
 	i = 0;
 	while ( i < state.config ->number_of_coders)
