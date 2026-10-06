@@ -14,7 +14,7 @@
 int	main(int argc, char **argv)
 {
 //	t_config	*config;
-	t_state		*state;
+	t_state		state;
 	int 	i;
 	pthread_t th[4];
 
@@ -27,15 +27,15 @@ int	main(int argc, char **argv)
 	}
 	if (!validate(argv))
 		return(0);
-	init_config(argc, argv, config);i
+	init_config(argc, argv, state.config);
 
 // array allocate + init
-	state.coders = malloc(sizeof(t_coder) * state.config ->number_of_coders)
-	state.dongles = malloc(sizeof(t_dongle) * state.config ->number_of_coders)
+	state.coders = malloc(sizeof(t_coder) * state.config ->number_of_coders);
+	state.dongles = malloc(sizeof(t_dongle) * state.config ->number_of_coders);
 	i = 0;
 	while ( i < state.config ->number_of_coders)
 	{
-		pthread_muxet_init(&state.dongles[i].mutex, NULL);
+		pthread_mutex_init(&state.dongles[i].mutex, NULL);
 		state.dongles[i].id = i;
 		state.dongles[i].taken = 0;
 		state.dongles[i].release_start = 0;
@@ -46,37 +46,28 @@ int	main(int argc, char **argv)
 	{
 		//pthreadd_create(&state.coders[i].thread,NULL, routine ,NULL)
 		state.coders[i].id = i;
-		state.coders[i].time_to_burn_out = 0;
+		state.coders[i].time_to_burnout = 0;
 		state.coders[i].num_of_compiles = 0;
-		state.coders[i].left = state.dongles[i];
-		state.coders[i].right = state.dongles[(i + 1) % state.config.num_of_coders];
+		state.coders[i].left = &state.dongles[i];
+		state.coders[i].right = &state.dongles[(i + 1) % state.config->number_of_coders];
 		i++;
 	}
 
 // threads
-	while ( i < config ->number_of_coders)
+	i = 0;
+	while ( i < state.config ->number_of_coders)
 	{
-		if (pthread_create(&th[i], NULL, routine,NULL) != 0)
+		if (pthread_create(&state.coders[i].thread, NULL, routine,&state) != 0)
 			perror("Failed to create thread");
 		i++;
 	}
 	i = 0;
-	while ( i < config ->number_of_coders)
+	while ( i < state.config ->number_of_coders)
 	{
-		if (pthread_join(th[i], NULL) != 0)
+		if (pthread_join(state.coders[i].thread, NULL) != 0)
 			perror("Failed to join thread");
 		i++;
 	}
-	
-	/*
-	printf("%d\n",config->number_of_coders);
-	printf("%d\n",config->time_to_burnout);
-	printf("%d\n",config->time_to_compile);
-	printf("%d\n",config->time_to_debug);
-	printf("%d\n",config->time_to_refactor);
-	printf("%d\n",config->number_of_compiles_required);
-	printf("%d\n",config->dongle_cooldown);
-	printf("%s\n",config->scheduler);
-	*/
+		
 	return 0;
 }
