@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <pthread.h>
 #include<unistd.h>
-
+#include <time.h>
 
 
 //structs
@@ -39,6 +40,16 @@ typedef struct s_coder
 	int compilation_start;
 } t_coder;
 
+typedef struct s_state
+{
+	t_coder *coders;
+	t_dongle *dongles;
+	t_config *config;
+	struct timespec start_time;
+	bool someone_starved;
+} t_state;
+
 int validate(char **argv);
 void* routine(void* arg);
 void init_config(int argc ,char **argv, t_config *config);
+long get_elapsed_ms(struct timespec start);
