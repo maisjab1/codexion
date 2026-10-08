@@ -16,7 +16,6 @@ int	main(int argc, char **argv)
 //	t_config	*config;
 	t_state		state;
 	int 	i;
-	pthread_t th[4];
 
 	state.config = malloc(sizeof(t_config));
 	memset(state.config, 0, sizeof(t_config));
@@ -44,9 +43,9 @@ int	main(int argc, char **argv)
 	i = 0;
 	while ( i < state.config ->number_of_coders)
 	{
-		//pthreadd_create(&state.coders[i].thread,NULL, routine ,NULL)
+		state.coders[i].state=&state;
 		state.coders[i].id = i;
-		state.coders[i].time_to_burnout = 0;
+		clock_gettime(CLOCK_MONOTONIC, &state.coders[i].wait_start);
 		state.coders[i].num_of_compiles = 0;
 		state.coders[i].left = &state.dongles[i];
 		state.coders[i].right = &state.dongles[(i + 1) % state.config->number_of_coders];
@@ -56,10 +55,10 @@ int	main(int argc, char **argv)
 	clock_gettime(CLOCK_MONOTONIC, &state.start_time);
 	state.someone_starved = false;
 // threads
-	i = 0;
+i = 0;
 	while ( i < state.config ->number_of_coders)
 	{
-		if (pthread_create(&state.coders[i].thread, NULL, routine,&state) != 0)
+		if (pthread_create(&state.coders[i].thread, NULL, routine,&state.coders[i]) != 0)
 			perror("Failed to create thread");
 		i++;
 	}

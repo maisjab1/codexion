@@ -31,8 +31,9 @@ typedef struct s_dongle
 
 typedef struct s_coder
 {
+	t_state	*state; 
 	pthread_t thread;
-	int time_to_burnout;
+	struct timespec wait_start;
 	int num_of_compiles;
 	unsigned int id;
 	t_dongle *left;
