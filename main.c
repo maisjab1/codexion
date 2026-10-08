@@ -35,7 +35,7 @@ int	main(int argc, char **argv)
 	while ( i < state.config ->number_of_coders)
 	{
 		pthread_mutex_init(&state.dongles[i].mutex, NULL);
-		state.dongles[i].id = i;
+		state.dongles[i].id = i + 1;
 		state.dongles[i].taken = 0;
 		// state.dongles[i].release_start = 0;
 		i++;
@@ -44,7 +44,7 @@ int	main(int argc, char **argv)
 	while ( i < state.config ->number_of_coders)
 	{
 		state.coders[i].state=&state;
-		state.coders[i].id = i;
+		state.coders[i].id = i + 1;
 		clock_gettime(CLOCK_MONOTONIC, &state.coders[i].wait_start);
 		state.coders[i].num_of_compiles = 0;
 		state.coders[i].left = &state.dongles[i];
