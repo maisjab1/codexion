@@ -5,6 +5,8 @@
 ## The dining philosophers problem
 The dining philosophers problem is a classic computer science illustration of synchronization and resource allocation issues in concurrent programming and operating systems.
 
+<img width="300" height="220" alt="image" src="https://github.com/user-attachments/assets/fe25094e-1a74-43cb-8e9a-173eea77c801" />
+
 The Analogy
 
 • Philosophers represent concurrent CPU processes or threads.
@@ -22,9 +24,13 @@ Core Issues in CPU/Concurrency
 Codexion is a concurrency simulation in C, based on the Dining Philosophers problem. Several "coder" threads compete for a limited pool of USB dongles, and a coder must hold a dongle before it can compile.
 
 where:
+
 coder -> philosopher
+
 dongle -> fork
+
 eating -> compiling
+
 
 
 The goal is to create a competition between differents coders using thread.
@@ -36,7 +42,9 @@ refactor
 
 
 They compile, then debug, then refactor and repeat.
+
 Coders can burns out starting the simulation or when they finish compiling. They need to compile before the timer hits 0.
+
 Do to that, they need both USB dongles. They are many dongles that coders. To compile, they need a dongle in each hands. Once compiling is done,they release the dongles.
 If each coders have compiled a certain amount of time, the simulation can stop.
 They can't communicate and they do not know when a coder will burns out.
