@@ -20,10 +20,12 @@ Core Issues in CPU/Concurrency
    
 ## Codexion
 Codexion is a concurrency simulation in C, based on the Dining Philosophers problem. Several "coder" threads compete for a limited pool of USB dongles, and a coder must hold a dongle before it can compile.
+
 where:
 coder -> philosopher
 dongle -> fork
 eating -> compiling
+
 
 The goal is to create a competition between differents coders using thread.
 There is one or more coders. Each can do 3 things at a time:
@@ -31,6 +33,8 @@ There is one or more coders. Each can do 3 things at a time:
 compile
 debug
 refactor
+
+
 They compile, then debug, then refactor and repeat.
 Coders can burns out starting the simulation or when they finish compiling. They need to compile before the timer hits 0.
 Do to that, they need both USB dongles. They are many dongles that coders. To compile, they need a dongle in each hands. Once compiling is done,they release the dongles.
