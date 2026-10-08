@@ -42,3 +42,7 @@ while multiprocessing runs completely separate processes with their own memory s
 . [A video on 'Semaphores'](https://youtu.be/XDIOC2EY5JE?si=nbppYzrV0DSG76ln)
 
 . [A video on 'The dining philosophers problem'](https://www.youtube.com/watch?v=FYUi-u7UWgw&list=TLPQMTIwOTIwMjaUGbdWMS_Bvg&index=2)
+
+. ['Asymmetric solution'](https://diningphilosophers.eu/hierarchy_asymmetric)
+
+. ['clock_gettime']('https://www.qnx.com/developers/docs/8.0/com.qnx.doc.neutrino.lib_ref/topic/c/clock_gettime.html')
