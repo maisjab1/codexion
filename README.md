@@ -45,4 +45,4 @@ while multiprocessing runs completely separate processes with their own memory s
 
 . ['Asymmetric solution'](https://diningphilosophers.eu/hierarchy_asymmetric)
 
-. ['clock_gettime']('https://www.qnx.com/developers/docs/8.0/com.qnx.doc.neutrino.lib_ref/topic/c/clock_gettime.html')
+. ['clock_gettime'](https://www.qnx.com/developers/docs/8.0/com.qnx.doc.neutrino.lib_ref/topic/c/clock_gettime.html)
