@@ -3,6 +3,41 @@
 # Description
 
 ## The dining philosophers problem
+The dining philosophers problem is a classic computer science illustration of synchronization and resource allocation issues in concurrent programming and operating systems.
+
+The Analogy
+
+• Philosophers represent concurrent CPU processes or threads.
+• Forks or chopsticks represent shared hardware or software resources (like memory blocks, I/O devices, or locks) that only one process can use at a time.
+• Eating requires holding two shared resources simultaneously (left and right forks)
+
+
+Core Issues in CPU/Concurrency
+
+1. Deadlock: If every philosopher/process grabs the left fork at the exact same time, all right forks are taken. Every process waits forever for a second resource, freezing the system.
+2. Starvation: A process might continually get blocked from acquiring both resources because neighboring processes keep monopolizing them.
+3. Mutual Exclusion: Two processes cannot safely access the same shared resource (fork) simultaneously
+   
+## Codexion
+Codexion is a concurrency simulation in C, based on the Dining Philosophers problem. Several "coder" threads compete for a limited pool of USB dongles, and a coder must hold a dongle before it can compile.
+where:
+coder -> philosopher
+dongle -> fork
+eating -> compiling
+
+The goal is to create a competition between differents coders using thread.
+There is one or more coders. Each can do 3 things at a time:
+
+compile
+debug
+refactor
+They compile, then debug, then refactor and repeat.
+Coders can burns out starting the simulation or when they finish compiling. They need to compile before the timer hits 0.
+Do to that, they need both USB dongles. They are many dongles that coders. To compile, they need a dongle in each hands. Once compiling is done,they release the dongles.
+If each coders have compiled a certain amount of time, the simulation can stop.
+They can't communicate and they do not know when a coder will burns out.
+
+
 <img width="757" height="772" alt="image" src="https://github.com/user-attachments/assets/f1122823-bc4f-4f89-89eb-0849c3fe5b59" />
 
 ## Some terminologies
