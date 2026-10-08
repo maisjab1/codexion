@@ -29,8 +29,11 @@ void	work(t_coder *coder)
 {	
 	printf("%ld %d is compiling\n", get_elapsed_ms(coder->state->start_time), coder->id);
 	coder->num_of_compiles++;
+	usleep(coder->state->config->time_to_compile * 1000);
 	printf("%ld %d is debugging\n", get_elapsed_ms(coder->state->start_time), coder->id);
+	usleep(coder->state->config->time_to_debug * 1000);
 	printf("%ld %d is refactoring\n", get_elapsed_ms(coder->state->start_time), coder->id);
+	usleep(coder->state->config->time_to_refactor * 1000);
 	release(coder->left);
 	release(coder->right);
 }
@@ -39,7 +42,8 @@ void* routine(void* arg)
 	t_coder *coder = (t_coder *) arg;
 	t_state *state = coder->state;
 	t_dongle *first ;	
-	t_dongle *second ;	
+	t_dongle *second ;
+	clock_gettime(CLOCK_MONOTONIC, &coder->wait_start);
 	while(coder->num_of_compiles < state->config->number_of_compiles_required)
 	{
 		if (state->someone_starved)
@@ -48,7 +52,6 @@ void* routine(void* arg)
 		first = (coder->id % 2 == 0)  ?  coder->left :coder->right;
 		second = (coder->id % 2 == 0)  ? coder->right :coder->left;
 		// try to get first dongle
-		clock_gettime(CLOCK_MONOTONIC, &coder->wait_start);
 		if (get_elapsed_ms(coder->wait_start) > state->config->time_to_burnout)
 		{
 			state->someone_starved =true;
@@ -65,6 +68,8 @@ void* routine(void* arg)
         	// if got it, try second
         	// if got both: work, release, repeat
         	// if not: check starvation, release first if needed
+		// sleep to wait before retrying to take the dongles prevents busy-waiting
+		usleep(1000);
 	}
 	return NULL;
 }
