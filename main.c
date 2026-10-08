@@ -37,7 +37,7 @@ int	main(int argc, char **argv)
 		pthread_mutex_init(&state.dongles[i].mutex, NULL);
 		state.dongles[i].id = i;
 		state.dongles[i].taken = 0;
-		state.dongles[i].release_start = 0;
+		// state.dongles[i].release_start = 0;
 		i++;
 	}
 	i = 0;

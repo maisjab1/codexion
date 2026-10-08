@@ -1,5 +1,5 @@
 #include "codexion.h"
-bool try_to_get(t_dongle *dongle)
+bool try_to_get(t_dongle *dongle,t_coder *coder)
 {
 	pthread_mutex_lock(&dongle->mutex);
 	if (dongle->taken)
@@ -11,6 +11,7 @@ bool try_to_get(t_dongle *dongle)
 	{
 		dongle->taken =true;
 		pthread_mutex_unlock(&dongle->mutex);
+		printf("%ld %d has taken a dongle\n", get_elapsed_ms(coder->state->start_time), coder->id);
 		return true;
 	}
 }
@@ -25,10 +26,13 @@ void	release(t_dongle *dongle)
 }
 
 void	work(t_coder *coder)
-{		
-	printf("%ld%d",get_elapsed_ms(),coder->id,"is compiling\n")
-	printf("%ld%d",code->id,"is debugging\n")
- 	printf("%ld%d",code->id,"is refactoring\n")
+{	
+	printf("%ld %d is compiling\n", get_elapsed_ms(coder->state->start_time), coder->id);
+	coder->num_of_compiles++;
+	printf("%ld %d is debugging\n", get_elapsed_ms(coder->state->start_time), coder->id);
+	printf("%ld %d is refactoring\n", get_elapsed_ms(coder->state->start_time), coder->id);
+	release(coder->left);
+	release(coder->right);
 }
 void* routine(void* arg)
 {
@@ -36,7 +40,7 @@ void* routine(void* arg)
 	t_state *state = coder->state;
 	t_dongle *first ;	
 	t_dongle *second ;	
-	while(coder->number_of_compiles < state->config->number_of_compiles_required)
+	while(coder->num_of_compiles < state->config->number_of_compiles_required)
 	{
 		if (state->someone_starved)
             		return NULL;
@@ -48,11 +52,12 @@ void* routine(void* arg)
 		if (get_elapsed_ms(coder->wait_start) > state->config->time_to_burnout)
 		{
 			state->someone_starved =true;
+			printf("%ld %d burned out\n", get_elapsed_ms(coder->state->start_time), coder->id);
 			return NULL;
 		}
-		if (try_to_get(first))i
+		if (try_to_get(first,coder))
 		{
-			if(try_to_get(second))
+			if(try_to_get(second,coder))
 				work(coder);
 			else
 				release(first);

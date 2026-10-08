@@ -6,7 +6,7 @@
 #include<unistd.h>
 #include <time.h>
 
-
+typedef struct s_state t_state;  // forward declaration
 //structs
 typedef struct s_config
 {
@@ -26,8 +26,9 @@ typedef struct s_dongle
 	pthread_mutex_t mutex;
 	unsigned int id;
 	bool taken;
-	int release_start;
+	struct timespec release_start;
 } t_dongle;
+
 
 typedef struct s_coder
 {
@@ -39,7 +40,7 @@ typedef struct s_coder
 	t_dongle *left;
 	t_dongle *right;
 	int compilation_start;
-} t_coder;
+}t_coder;
 
 typedef struct s_state
 {
@@ -54,3 +55,6 @@ int validate(char **argv);
 void* routine(void* arg);
 void init_config(int argc ,char **argv, t_config *config);
 long get_elapsed_ms(struct timespec start);
+bool try_to_get(t_dongle *dongle,t_coder *coder);
+void release(t_dongle *dongle);
+void work(t_coder *coder);
