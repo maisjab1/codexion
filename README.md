@@ -39,7 +39,6 @@ The dining philosophers problem is a classic computer science illustration of sy
 - The simulation stops when a coder burns out, or when every coder has compiled at least `number_of_compiles_required` times.
 - Coders **cannot communicate** and do not know when another coder will burn out.
 
-![Codexion Simulation](https://github.com/user-attachments/assets/f1122823-bc4f-4f89-89eb-0849c3fe5b59)
 
 ## **Instructions**
 
@@ -101,6 +100,9 @@ Mutual exclusion is a property of concurrency control that prevents race conditi
 ### **Multi-threading vs Multi-processing**
 Multi-threading uses multiple threads inside a single process to share memory, while multi-processing runs completely separate processes with their own memory spaces.
 
+### **Concurrency vs parallelism**
+<img width="1280" height="1664" alt="image" src="https://github.com/user-attachments/assets/5ad4f748-43d1-43b4-a152-ba6667446ad0" />
+
 ## **Resources**
 
 **Articles & References:**
@@ -113,5 +115,6 @@ Multi-threading uses multiple threads inside a single process to share memory, w
 - [clock_gettime](https://www.qnx.com/developers/docs/8.0/com.qnx.doc.neutrino.lib_ref/topic/c/clock_gettime.html)
 
 **Videos:**
+- [Youtube playlist to understand threads in C](https://www.youtube.com/watch?v=d9s_d28yJq0&list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2)
 - [Semaphores](https://youtu.be/XDIOC2EY5JE)
 - [The Dining Philosophers Problem](https://www.youtube.com/watch?v=FYUi-u7UWgw&list=TLPQMTIwOTIwMjaUGbdWMS_Bvg&index=2)
