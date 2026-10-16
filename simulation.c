@@ -2,7 +2,7 @@
 bool try_to_get(t_dongle *dongle,t_coder *coder)
 {
 	pthread_mutex_lock(&dongle->mutex);
-	if (dongle->taken)
+	if (dongle->taken || get_elapsed_ms(dongle->release_start) < coder->state->config->time_to_burnout ) //dongle cooldown
 	{	 
 		pthread_mutex_unlock(&dongle->mutex);
         	return false;
