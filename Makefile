@@ -5,7 +5,9 @@ SRCS = main.c \
        validate.c \
        utils.c\
        init.c \
-       simulation.c
+       simulation.c\
+	   queue.c\
+	   scheduler.c
 OBJS = $(SRCS:.c=.o)
 LIB = -L . 
 

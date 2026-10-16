@@ -6,6 +6,13 @@
 #include<unistd.h>
 #include <time.h>
 
+typedef enum e_scheduler
+{
+	FIFO,
+	EDF,
+} t_scheduler;
+
+
 typedef struct s_state t_state;  // forward declaration
 //structs
 typedef struct s_config
@@ -51,6 +58,27 @@ typedef struct s_state
 	bool someone_starved;
 } t_state;
 
+typedef struct s_request
+{
+	unsigned int	coder_id;
+	long			deadline;
+	unsigned long	arrival_order;
+}	t_request;
+
+typedef struct s_node
+{
+	struct s_node *next;
+    struct s_node *prev;
+    t_request		req;
+} t_node;
+
+typedef struct s_pq
+{
+	t_node *head;
+	int	size;
+    int    (*cmp)(t_request *, t_request *);
+}  t_pq;
+
 int validate(char **argv);
 void* routine(void* arg);
 void init_config(char **argv, t_config *config);
@@ -58,3 +86,9 @@ long get_elapsed_ms(struct timespec start);
 bool try_to_get(t_dongle *dongle,t_coder *coder);
 void release(t_dongle *dongle);
 void work(t_coder *coder);
+void		init_queue(t_pq *q, int (*cmp)(t_request *, t_request *));
+void		push(t_pq *q, t_request req);
+t_node		*pop(t_pq *q);
+t_request	peek(t_pq *q);
+int			cmp_fifo(t_request *r1, t_request *r2);
+int			cmp_edf(t_request *r1, t_request *r2);
