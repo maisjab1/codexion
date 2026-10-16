@@ -101,7 +101,7 @@ Mutual exclusion is a property of concurrency control that prevents race conditi
 Multi-threading uses multiple threads inside a single process to share memory, while multi-processing runs completely separate processes with their own memory spaces.
 
 ### **Concurrency vs parallelism**
-<img width="1280" height="1664" alt="image" src="https://github.com/user-attachments/assets/5ad4f748-43d1-43b4-a152-ba6667446ad0" />
+<img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/5ad4f748-43d1-43b4-a152-ba6667446ad0" />
 
 ## **Resources**
 
