@@ -1,6 +1,6 @@
 #include "codexion.h"
 
-void init_config(int argc ,char **argv,t_config *config)
+void init_config(char **argv,t_config *config)
 {
 	config -> number_of_coders = atoi(argv[1]);
 	config -> time_to_burnout = atoi(argv[2]);

@@ -10,7 +10,7 @@ OBJS = $(SRCS:.c=.o)
 LIB = -L . 
 
 run :
-	@cc  $(SRCS) -o codexion
+	@cc $(CFLAGS) $(SRCS) -o codexion
 clean:
 	@rm codexion
 

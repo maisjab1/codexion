@@ -53,7 +53,7 @@ typedef struct s_state
 
 int validate(char **argv);
 void* routine(void* arg);
-void init_config(int argc ,char **argv, t_config *config);
+void init_config(char **argv, t_config *config);
 long get_elapsed_ms(struct timespec start);
 bool try_to_get(t_dongle *dongle,t_coder *coder);
 void release(t_dongle *dongle);

@@ -6,7 +6,7 @@
 /*   By: mjabarin <mjabarin@learner.42.tech>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/14 16:39:54 by mjabarin          #+#    #+#             */
-/*   Updated: 2026/09/26 18:58:59 by mjabarin         ###   ########.fr       */
+/*   Updated: 2026/10/16 16:31:54 by mjabarin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "codexion.h"
@@ -26,7 +26,7 @@ int	main(int argc, char **argv)
 	}
 	if (!validate(argv))
 		return(0);
-	init_config(argc, argv, state.config);
+	init_config(argv, state.config);
 
 // array allocate + init
 	state.coders = malloc(sizeof(t_coder) * state.config ->number_of_coders);
@@ -59,14 +59,14 @@ i = 0;
 	while ( i < state.config ->number_of_coders)
 	{
 		if (pthread_create(&state.coders[i].thread, NULL, routine,&state.coders[i]) != 0)
-			perror("Failed to create thread");
+			fprintf(stderr, "Failed to create thread");
 		i++;
 	}
 	i = 0;
 	while ( i < state.config ->number_of_coders)
 	{
 		if (pthread_join(state.coders[i].thread, NULL) != 0)
-			perror("Failed to join thread");
+			fprintf(stderr,"Failed to join thread");
 		i++;
 	}
 		
