@@ -67,10 +67,12 @@ typedef struct s_request
 
 typedef struct s_node
 {
-	struct s_node *next;
-    struct s_node *prev;
-    t_request		req;
-} t_node;
+    int index;
+    struct s_node *parent;
+    struct s_node *left;
+    struct s_node *right;
+    t_request      req;
+}   t_node;
 
 typedef struct s_pq
 {
@@ -87,8 +89,7 @@ bool try_to_get(t_dongle *dongle,t_coder *coder);
 void release(t_dongle *dongle);
 void work(t_coder *coder);
 void		init_queue(t_pq *q, int (*cmp)(t_request *, t_request *));
-void		push(t_pq *q, t_request req);
-t_node		*pop(t_pq *q);
+void		insert(t_pq *q, t_request req);
 t_request	peek(t_pq *q);
 int			cmp_fifo(t_request *r1, t_request *r2);
 int			cmp_edf(t_request *r1, t_request *r2);
