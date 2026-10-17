@@ -96,7 +96,7 @@ Mutual exclusion is a property of concurrency control that prevents race conditi
 [Mutual Exclusion (Wikipedia)](https://en.wikipedia.org/wiki/Mutual_exclusion)
 
 ## **Comparisons**
-
+https://www.youtube.com/watch?v=1ppUtnVZee4
 ### **Multi-threading vs Multi-processing**
 Multi-threading uses multiple threads inside a single process to share memory, while multi-processing runs completely separate processes with their own memory spaces.
 
@@ -118,3 +118,4 @@ Multi-threading uses multiple threads inside a single process to share memory, w
 - [Youtube playlist to understand threads in C](https://www.youtube.com/watch?v=d9s_d28yJq0&list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2)
 - [Semaphores](https://youtu.be/XDIOC2EY5JE)
 - [The Dining Philosophers Problem](https://www.youtube.com/watch?v=FYUi-u7UWgw&list=TLPQMTIwOTIwMjaUGbdWMS_Bvg&index=2)
+- [Min heap](https://www.youtube.com/watch?v=1ppUtnVZee4)

@@ -24,7 +24,7 @@ void swap(t_request *a, t_request *b)
 t_node *get_node(t_node *node , int n)
 {
     t_node	*found;
-
+    
     if (!node)
         return (NULL);
     if (node->index == n)
@@ -56,12 +56,13 @@ void insert (t_pq *q, t_request req)
     node->left =NULL;
     node->right = NULL;
     node->parent = NULL;
+    n = q->size + 1;
+    node->index = n;
     
     if (q->size==0)
         q->head=node;
     else
     {
-        n = q->size + 1;
         parent=get_node(q->head, n / 2);
         node->parent = parent;
 		if (n % 2 == 0)               /* even → left child */
@@ -79,9 +80,9 @@ void shift_down(t_pq *q, t_node *node)
     while(1)
     {
         best = node;
-        if (node->left && q->cmp(&node->left->req, &node->req) < 0)
+        if (node->left && q->cmp(&node->left->req, &best->req) < 0)
             best = node->left;
-        if (node->right && q->cmp(&node->right->req, &node->req) < 0)
+        if (node->right && q->cmp(&node->right->req, &best->req) < 0)
             best = node->right;
         if (best == node)
             break;
@@ -105,6 +106,13 @@ int extract(t_pq *q, t_request *req)
     }
     last = get_node(q->head, q->size);
     swap(&last->req,&q->head->req);
+    if (last->parent)
+    {
+        if (last->parent->left == last)
+            last->parent->left = NULL;
+        else
+            last->parent->right = NULL;
+    }
     free(last);
     shift_down(q, q->head);
     q->size--;

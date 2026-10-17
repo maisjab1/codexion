@@ -27,6 +27,9 @@ int	main(int argc, char **argv)
 	if (!validate(argv))
 		return(0);
 	init_config(argv, state.config);
+    int (*cmp)(t_request *, t_request *) = cmp_fifo;
+    if (strcmp(state.config->scheduler, "edf") == 0)
+        cmp = cmp_edf;   
 
 // array allocate + init
 	state.coders = malloc(sizeof(t_coder) * state.config ->number_of_coders);
@@ -37,6 +40,8 @@ int	main(int argc, char **argv)
 		pthread_mutex_init(&state.dongles[i].mutex, NULL);
 		state.dongles[i].id = i + 1;
 		state.dongles[i].taken = 0;
+        state.dongles[i].pq= malloc(sizeof(t_pq));
+        init_queue(state.dongles[i].pq, cmp);
 		// state.dongles[i].release_start = 0;
 		i++;
 	}

@@ -6,17 +6,17 @@ bool try_to_get(t_dongle *dongle,t_coder *coder,t_state *state)
     t_request head;
 
     req.coder_id = coder->id;
-    // we need another mutex here 
+
     req.arrival_order = state->req_counter++;
-    //
-    req.deadline = coder->compilation_start + state->config->time_to_burnout;
+
+    req.deadline = coder->compilation_start + state->config->time_to_burnout; 
     insert(dongle->pq, req);
     
 	pthread_mutex_lock(&dongle->mutex);
     head = peek(dongle->pq);
     if (coder->id != head.coder_id)
         return false;
-    if (dongle->taken || get_elapsed_ms(dongle->release_start) < coder->state->config->time_to_burnout ) //dongle cooldown
+    if (dongle->taken || get_elapsed_ms(dongle->release_start) < coder->state->config->dongle_cooldown) //dongle cooldown
 	{	 
 		pthread_mutex_unlock(&dongle->mutex);
         	return false;
