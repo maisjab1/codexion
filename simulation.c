@@ -1,8 +1,22 @@
 #include "codexion.h"
-bool try_to_get(t_dongle *dongle,t_coder *coder)
+#include <stdbool.h>
+bool try_to_get(t_dongle *dongle,t_coder *coder,t_state *state)
 {
+    t_request req;
+    t_request head;
+
+    req.coder_id = coder->id;
+    // we need another mutex here 
+    req.arrival_order = state->req_counter++;
+    //
+    req.deadline = coder->compilation_start + state->config->time_to_burnout;
+    insert(dongle->pq, req);
+    
 	pthread_mutex_lock(&dongle->mutex);
-	if (dongle->taken || get_elapsed_ms(dongle->release_start) < coder->state->config->time_to_burnout ) //dongle cooldown
+    head = peek(dongle->pq);
+    if (coder->id != head.coder_id)
+        return false;
+    if (dongle->taken || get_elapsed_ms(dongle->release_start) < coder->state->config->time_to_burnout ) //dongle cooldown
 	{	 
 		pthread_mutex_unlock(&dongle->mutex);
         	return false;
@@ -10,6 +24,7 @@ bool try_to_get(t_dongle *dongle,t_coder *coder)
 	else
 	{
 		dongle->taken =true;
+        extract(dongle->pq, &req);
 		pthread_mutex_unlock(&dongle->mutex);
 		printf("%ld %d has taken a dongle\n", get_elapsed_ms(coder->state->start_time), coder->id);
 		return true;
@@ -66,9 +81,9 @@ void* routine(void* arg)
 			printf("%ld %d burned out\n", get_elapsed_ms(coder->state->start_time), coder->id);
 			return NULL;
 		}
-		if (try_to_get(first,coder))
+		if (try_to_get(first,coder,state))
 		{
-			if(try_to_get(second,coder))
+			if(try_to_get(second,coder,state))
 			{
 				work(coder);
 				clock_gettime(CLOCK_MONOTONIC, &coder->wait_start);

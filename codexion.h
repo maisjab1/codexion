@@ -12,7 +12,7 @@ typedef enum e_scheduler
 	EDF,
 } t_scheduler;
 
-
+typedef struct s_pq t_pq;
 typedef struct s_state t_state;  // forward declaration
 //structs
 typedef struct s_config
@@ -34,6 +34,7 @@ typedef struct s_dongle
 	unsigned int id;
 	bool taken;
 	struct timespec release_start;
+    t_pq *pq;
 } t_dongle;
 
 
@@ -56,6 +57,7 @@ typedef struct s_state
 	t_config *config;
 	struct timespec start_time;
 	bool someone_starved;
+    unsigned int req_counter;
 } t_state;
 
 typedef struct s_request
@@ -85,11 +87,12 @@ int validate(char **argv);
 void* routine(void* arg);
 void init_config(char **argv, t_config *config);
 long get_elapsed_ms(struct timespec start);
-bool try_to_get(t_dongle *dongle,t_coder *coder);
+bool try_to_get(t_dongle *dongle,t_coder *coder, t_state *state);
 void release(t_dongle *dongle);
 void work(t_coder *coder);
 void		init_queue(t_pq *q, int (*cmp)(t_request *, t_request *));
 void		insert(t_pq *q, t_request req);
+int extract(t_pq *q, t_request *req);
 t_request	peek(t_pq *q);
 int			cmp_fifo(t_request *r1, t_request *r2);
 int			cmp_edf(t_request *r1, t_request *r2);

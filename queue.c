@@ -39,7 +39,7 @@ void shift_up(t_pq *q, t_node *node)
 {
     while(node->parent  && q->cmp(&node->req, &node->parent->req) < 0)
     {
-        swap(&node, &node->parent);
+        swap(&node->req, &node->parent->req);
         node=node->parent;
     }
 }
@@ -95,7 +95,7 @@ int extract(t_pq *q, t_request *req)
     t_node *last;
     if (!q || !q->head || q->size == 0)
         return (0);
-    *req = q->head-req;
+    *req = q->head->req;
     if (q->size ==1)
     {
         free(q->head);
@@ -104,9 +104,10 @@ int extract(t_pq *q, t_request *req)
         return(1);
     }
     last = get_node(q->head, q->size);
-    swap(last->req,q->head-req);
+    swap(&last->req,&q->head->req);
     free(last);
     shift_down(q, q->head);
     q->size--;
+    return (1);
 }
 
