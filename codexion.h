@@ -96,3 +96,4 @@ int extract(t_pq *q, t_request *req);
 t_request	peek(t_pq *q);
 int			cmp_fifo(t_request *r1, t_request *r2);
 int			cmp_edf(t_request *r1, t_request *r2);
+void    clean_up(t_state *state);

@@ -110,4 +110,3 @@ int extract(t_pq *q, t_request *req)
     q->size--;
     return (1);
 }
-

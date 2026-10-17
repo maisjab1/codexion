@@ -55,7 +55,7 @@ int	main(int argc, char **argv)
 	clock_gettime(CLOCK_MONOTONIC, &state.start_time);
 	state.someone_starved = false;
 // threads
-i = 0;
+    i = 0;
 	while ( i < state.config ->number_of_coders)
 	{
 		if (pthread_create(&state.coders[i].thread, NULL, routine,&state.coders[i]) != 0)
@@ -69,6 +69,6 @@ i = 0;
 			fprintf(stderr,"Failed to join thread");
 		i++;
 	}
-		
+    clean_up(&state);
 	return 0;
 }
