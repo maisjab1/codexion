@@ -1,43 +1,46 @@
 #include "codexion.h"
 #include <stdbool.h>
+pthread_cond_t cond;
+
 bool try_to_get(t_dongle *dongle,t_coder *coder,t_state *state)
 {
     t_request req;
     t_request head;
 
     req.coder_id = coder->id;
-
     req.arrival_order = state->req_counter++;
-
     req.deadline = coder->compilation_start + state->config->time_to_burnout; 
-    insert(dongle->pq, req);
     
 	pthread_mutex_lock(&dongle->mutex);
+    insert(dongle->pq, req);
     head = peek(dongle->pq);
-    if (coder->id != head.coder_id)
-        return false;
     if (dongle->taken || get_elapsed_ms(dongle->release_start) < coder->state->config->dongle_cooldown) //dongle cooldown
 	{	 
 		pthread_mutex_unlock(&dongle->mutex);
-        	return false;
-	}
-	else
-	{
-		dongle->taken =true;
         extract(dongle->pq, &req);
-		pthread_mutex_unlock(&dongle->mutex);
-		printf("%ld %d has taken a dongle\n", get_elapsed_ms(coder->state->start_time), coder->id);
-		return true;
-	}
+        return false;
+	}  while (coder->id != head.coder_id)
+    {
+        pthread_cond_wait(&cond,&dongle->mutex);
+
+         //return false;
+    }
+
+    dongle->taken =true;
+    extract(dongle->pq, &req);
+    pthread_mutex_unlock(&dongle->mutex);
+    printf("%ld %d has taken a dongle\n", get_elapsed_ms(coder->state->start_time), coder->id);
+    return true;
+
 }
 
 void	release(t_dongle *dongle)
 {
-	pthread_mutex_lock(&dongle->mutex);
+	    pthread_mutex_lock(&dongle->mutex);
     	dongle->taken = false;
     	clock_gettime(CLOCK_MONOTONIC, &dongle->release_start);
-    	pthread_mutex_unlock(&dongle->mutex);
-
+        pthread_cond_broadcast(&cond);
+        pthread_mutex_unlock(&dongle->mutex);
 }
 
 void	work(t_coder *coder)
