@@ -31,6 +31,7 @@ typedef struct s_config
 typedef struct s_dongle
 {
 	pthread_mutex_t mutex;
+    pthread_cond_t  cond;
 	unsigned int id;
 	bool taken;
 	struct timespec release_start;

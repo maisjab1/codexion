@@ -1,6 +1,5 @@
 #include "codexion.h"
 #include <stdbool.h>
-pthread_cond_t cond;
 
 bool try_to_get(t_dongle *dongle,t_coder *coder,t_state *state)
 {
@@ -21,7 +20,7 @@ bool try_to_get(t_dongle *dongle,t_coder *coder,t_state *state)
         return false;
 	}  while (coder->id != head.coder_id)
     {
-        pthread_cond_wait(&cond,&dongle->mutex);
+        pthread_cond_wait(&dongle->cond,&dongle->mutex);
 
          //return false;
     }
@@ -39,7 +38,7 @@ void	release(t_dongle *dongle)
 	    pthread_mutex_lock(&dongle->mutex);
     	dongle->taken = false;
     	clock_gettime(CLOCK_MONOTONIC, &dongle->release_start);
-        pthread_cond_broadcast(&cond);
+        pthread_cond_broadcast(&dongle->cond);
         pthread_mutex_unlock(&dongle->mutex);
 }
 
