@@ -38,11 +38,12 @@ int	main(int argc, char **argv)
 	while ( i < state.config ->number_of_coders)
 	{
 		pthread_mutex_init(&state.dongles[i].mutex, NULL);
+        pthread_cond_init(&state.dongles[i].cond, NULL);
 		state.dongles[i].id = i + 1;
 		state.dongles[i].taken = 0;
         state.dongles[i].pq= malloc(sizeof(t_pq));
         init_queue(state.dongles[i].pq, cmp);
-		// state.dongles[i].release_start = 0;
+		clock_gettime(CLOCK_MONOTONIC,&state.dongles[i].release_start);
 		i++;
 	}
 	i = 0;

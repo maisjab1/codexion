@@ -11,26 +11,40 @@ bool try_to_get(t_dongle *dongle,t_coder *coder,t_state *state)
     req.deadline = coder->compilation_start + state->config->time_to_burnout; 
     
 	pthread_mutex_lock(&dongle->mutex);
-    insert(dongle->pq, req);
-    head = peek(dongle->pq);
-    if (dongle->taken || get_elapsed_ms(dongle->release_start) < coder->state->config->dongle_cooldown) //dongle cooldown
-	{	 
-		pthread_mutex_unlock(&dongle->mutex);
-        extract(dongle->pq, &req);
-        return false;
-	}  while (coder->id != head.coder_id)
+    insert(dongle->pq, req); 
+    while (!coder->state->someone_starved)
     {
-        pthread_cond_wait(&dongle->cond,&dongle->mutex);
-
-         //return false;
+        head = peek(dongle->pq);
+        if (head.coder_id == coder->id &&
+            !dongle->taken && 
+            (coder->num_of_compiles == 0 ||
+            get_elapsed_ms(dongle->release_start) >= coder->state->config->dongle_cooldown))
+            break;
+        if (head.coder_id == coder->id && !dongle->taken)   /* head, free, but cooling */
+        {
+            pthread_mutex_unlock(&dongle->mutex);
+            usleep(1000);
+            pthread_mutex_lock(&dongle->mutex);
+            continue;
+        }
+        if (coder->state->config->number_of_coders > 1)
+            pthread_cond_wait(&dongle->cond,&dongle->mutex);
+        else
+        {
+            pthread_mutex_unlock(&dongle->mutex);
+            return(false);
+        }
     }
-
+    if (coder->state->someone_starved)
+    {
+        pthread_mutex_unlock(&dongle->mutex);
+        return (false);
+    }
     dongle->taken =true;
     extract(dongle->pq, &req);
     pthread_mutex_unlock(&dongle->mutex);
     printf("%ld %d has taken a dongle\n", get_elapsed_ms(coder->state->start_time), coder->id);
     return true;
-
 }
 
 void	release(t_dongle *dongle)
@@ -45,6 +59,7 @@ void	release(t_dongle *dongle)
 void	work(t_coder *coder)
 {	
 	if (coder->state->someone_starved) return;
+    coder->compilation_start = get_elapsed_ms(coder->state->start_time);
 	printf("%ld %d is compiling\n", get_elapsed_ms(coder->state->start_time), coder->id);
 	coder->num_of_compiles++;
 	usleep(coder->state->config->time_to_compile * 1000);
