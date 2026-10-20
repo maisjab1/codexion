@@ -10,12 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "codexion.h"
+#include <bits/pthreadtypes.h>
+#include <pthread.h>
 
 int	main(int argc, char **argv)
 {
 //	t_config	*config;
 	t_state		state;
+    pthread_t   monitor;
 	int 	i;
+
 
 	state.config = malloc(sizeof(t_config));
 	memset(state.config, 0, sizeof(t_config));
@@ -64,6 +68,11 @@ int	main(int argc, char **argv)
 	clock_gettime(CLOCK_MONOTONIC, &state.start_time);
 	state.someone_starved = false;
 // threads
+// monitor
+
+    pthread_create(&monitor, NULL, monitor_routine,&state);
+    pthread_join(monitor, NULL);
+// coders
     i = 0;
 	while ( i < state.config ->number_of_coders)
 	{

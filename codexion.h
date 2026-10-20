@@ -88,6 +88,7 @@ typedef struct s_pq
 
 int validate(char **argv);
 void* routine(void* arg);
+void* monitor_routine(void* arg);
 void init_config(char **argv, t_config *config);
 long get_elapsed_ms(struct timespec start);
 bool try_to_get(t_dongle *dongle,t_coder *coder, t_state *state);

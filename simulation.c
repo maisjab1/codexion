@@ -111,7 +111,7 @@ void* routine(void* arg)
             usleep(state->config->time_to_burnout);
         }
 		// try to get first dongle
-		if (get_elapsed_ms(coder->wait_start) > state->config->time_to_burnout)
+		/*if (get_elapsed_ms(coder->wait_start) > state->config->time_to_burnout)
 		{
             pthread_mutex_lock(&coder->state->mutex);
 			state->someone_starved = true;
@@ -121,7 +121,7 @@ void* routine(void* arg)
 			printf("%ld %d burned out\n", get_elapsed_ms(coder->state->start_time), coder->id);
             pthread_mutex_unlock(&coder->state->print_mutex);
 			return NULL;
-		}
+		}*/
 		if (try_to_get(first,coder,state))
 		{
 			if(try_to_get(second,coder,state))
@@ -139,4 +139,30 @@ void* routine(void* arg)
 		usleep(1000);
 	}
 	return NULL;
+}
+void * monitor_routine(void* arg)
+{
+    t_state *state =(t_state*) arg;
+    int i ;
+
+    i = 0;
+    while (true)
+    {
+        while(i < state->config->number_of_coders)
+        {
+            if (get_elapsed_ms(state->coders[i].wait_start) > state->config->time_to_burnout)
+                {
+                   // pthread_mutex_lock(&state->mutex);
+                    state->someone_starved = true;
+                    //pthread_mutex_unlock(&state->mutex);
+                    
+                    //pthread_mutex_lock(&state->print_mutex);
+                    printf("%ld %d burned out\n", get_elapsed_ms(state->start_time), state->coders[i].id);
+                    //pthread_mutex_unlock(&coder->state->print_mutex);
+                    return NULL;
+                    break;
+                }
+            i++;
+        }
+    }
 }
