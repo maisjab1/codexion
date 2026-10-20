@@ -105,6 +105,11 @@ void* routine(void* arg)
 		// asymmetric pickup
 		first = (coder->id % 2 == 0)  ?  coder->left :coder->right;
 		second = (coder->id % 2 == 0)  ? coder->right :coder->left;
+        if (state->config->number_of_coders == 1)
+        {
+            try_to_get(first, coder, state);
+            usleep(state->config->time_to_burnout);
+        }
 		// try to get first dongle
 		if (get_elapsed_ms(coder->wait_start) > state->config->time_to_burnout)
 		{
