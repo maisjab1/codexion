@@ -7,9 +7,12 @@ bool try_to_get(t_dongle *dongle,t_coder *coder,t_state *state)
     t_request head;
 
     req.coder_id = coder->id;
+    pthread_mutex_lock(&state->mutex);
+
     req.arrival_order = state->req_counter++;
     req.deadline = coder->compilation_start + state->config->time_to_burnout; 
-    
+    pthread_mutex_unlock(&state->mutex);
+
 	pthread_mutex_lock(&dongle->mutex);
     insert(dongle->pq, req); 
     while (!coder->state->someone_starved)
@@ -60,19 +63,30 @@ void	work(t_coder *coder)
 {	
 	if (coder->state->someone_starved) return;
     coder->compilation_start = get_elapsed_ms(coder->state->start_time);
+    clock_gettime(CLOCK_MONOTONIC, &coder->wait_start);
+    
+    pthread_mutex_lock(&coder->state->print_mutex);
 	printf("%ld %d is compiling\n", get_elapsed_ms(coder->state->start_time), coder->id);
-	coder->num_of_compiles++;
+	pthread_mutex_unlock(&coder->state->print_mutex);
+	
+    coder->num_of_compiles++;
 	usleep(coder->state->config->time_to_compile * 1000);
 	release(coder->left);
 	release(coder->right);
 	if (coder->state->someone_starved) return;
 	
+    pthread_mutex_lock(&coder->state->print_mutex);
 	printf("%ld %d is debugging\n", get_elapsed_ms(coder->state->start_time), coder->id);
-	usleep(coder->state->config->time_to_debug * 1000);
-	if (coder->state->someone_starved) return;
+	pthread_mutex_unlock(&coder->state->print_mutex);
 	
+    usleep(coder->state->config->time_to_debug * 1000);
+	if (coder->state->someone_starved) return;
+    
+    pthread_mutex_lock(&coder->state->print_mutex);
 	printf("%ld %d is refactoring\n", get_elapsed_ms(coder->state->start_time), coder->id);
-	usleep(coder->state->config->time_to_refactor * 1000);
+	pthread_mutex_unlock(&coder->state->print_mutex);
+	
+    usleep(coder->state->config->time_to_refactor * 1000);
 	if (coder->state->someone_starved) return;
 	
 }
@@ -94,8 +108,13 @@ void* routine(void* arg)
 		// try to get first dongle
 		if (get_elapsed_ms(coder->wait_start) > state->config->time_to_burnout)
 		{
+            pthread_mutex_lock(&coder->state->mutex);
 			state->someone_starved = true;
+            pthread_mutex_unlock(&coder->state->mutex);
+            
+            pthread_mutex_lock(&coder->state->print_mutex);
 			printf("%ld %d burned out\n", get_elapsed_ms(coder->state->start_time), coder->id);
+            pthread_mutex_unlock(&coder->state->print_mutex);
 			return NULL;
 		}
 		if (try_to_get(first,coder,state))
@@ -103,7 +122,6 @@ void* routine(void* arg)
 			if(try_to_get(second,coder,state))
 			{
 				work(coder);
-				clock_gettime(CLOCK_MONOTONIC, &coder->wait_start);
 				//printf("%ld ",&coder->wait_start);
 			}
 			else

@@ -53,6 +53,8 @@ typedef struct s_coder
 
 typedef struct s_state
 {
+    pthread_mutex_t print_mutex;
+    pthread_mutex_t mutex;
 	t_coder *coders;
 	t_dongle *dongles;
 	t_config *config;
