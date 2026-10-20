@@ -1,6 +1,7 @@
-Name = codexion
+NAME = codexion
+
 CFLAGS = -Wall -Wextra -Werror -pthread
-INCLUDE = -I  include
+
 SRCS = main.c \
        validate.c \
        utils.c\
@@ -9,11 +10,24 @@ SRCS = main.c \
 	   queue.c\
 	   scheduler.c\
 	   clean.c
-OBJS = $(SRCS:.c=.o)
-LIB = -L . 
 
-run :
-	@cc $(CFLAGS) $(SRCS) -o codexion
+OBJS = $(SRCS:.c=.o)
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	@cc $(CFLAGS) $(OBJS) -o $(NAME)
+
+%.o:%.c 
+	$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
-	@rm codexion
+	@rm -f $(OBJS)
+
+fclean: clean
+	@rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re 
 
